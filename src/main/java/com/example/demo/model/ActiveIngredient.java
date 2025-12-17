@@ -16,5 +16,6 @@ public class ActiveIngredient {
 
     public Long getId() { return id; }
     public String getName() { return name; }
+    public 
     public void setName(String name) { this.name = name; }
 }
