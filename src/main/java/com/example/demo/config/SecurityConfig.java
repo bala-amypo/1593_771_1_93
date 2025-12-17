@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
 import org.springframework.context.annotation.*;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
@@ -18,7 +18,12 @@ public class SecurityConfig {
                 "/hello-servlet",
                 "/swagger-ui/**"
             ).permitAll()
-            .anyRequest().authenticated();
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(
+                new JwtAuthenticationFilter(),
+                SecurityContextHolderFilter.class
+            );
 
         return http.build();
     }
