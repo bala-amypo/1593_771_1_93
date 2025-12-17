@@ -435,3 +435,203 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST);
     }
 }
+
+
+package com.example.demo.security;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import java.util.*;
+
+public class CustomerUserDetails implements UserDetails {
+
+    private final String username;
+    private final String password;
+    private final String role;
+
+    public CustomerUserDetails(
+            String username,
+            String password,
+            String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority>
+    getAuthorities() {
+        return List.of(() -> role);
+    }
+
+    @Override
+    public String getPassword() { return password; }
+
+    @Override
+    public String getUsername() { return username; }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
+}
+
+
+
+package com.example.demo.security;
+
+import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.*;
+
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+
+@Service
+public class CustomerUserDetailsService
+        implements UserDetailsService {
+
+    private final UserRepository userRepo;
+
+    public CustomerUserDetailsService(
+            UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(
+            String email)
+            throws UsernameNotFoundException {
+
+        User user = userRepo.findByEmail(email);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(
+                    "User not found with email: " + email);
+        }
+
+        return new CustomerUserDetails(
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole()
+        );
+    }
+}
+
+
+
+
+
+package com.example.demo.exception;
+
+public class ResourceNotFoundException
+        extends RuntimeException {
+
+    public ResourceNotFoundException(
+            String resource,
+            String field,
+            Object value) {
+
+        super(resource + " not found with "
+                + field + " : " + value);
+    }
+}
+
+
+
+package com.example.demo.dto;
+
+public class AuthResponseDTO {
+
+    private String token;
+    private String type = "Bearer";
+
+    public AuthResponseDTO(String token) {
+        this.token = token;
+    }
+
+    public String getToken() { return token; }
+    public String getType() { return type; }
+}
+
+
+
+
+package com.example.demo.dto;
+
+import java.time.LocalDateTime;
+
+public class ErrorResponseDTO {
+
+    private String message;
+    private LocalDateTime time;
+
+    public ErrorResponseDTO(String message) {
+        this.message = message;
+        this.time = LocalDateTime.now();
+    }
+
+    public String getMessage() { return message; }
+    public LocalDateTime getTime() { return time; }
+}
+
+
+
+package com.example.demo.exception;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
+
+import com.example.demo.dto.ErrorResponseDTO;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO>
+    handleNotFound(ResourceNotFoundException ex) {
+
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(ex.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO>
+    handleGeneric(Exception ex) {
+
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+}
+
+
+
+
+package com.example.demo.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.*;
+
+@Configuration
+public class WebConfig
+        implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(
+            CorsRegistry registry) {
+
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedHeaders("*")
+                .allowedMethods("GET","POST",
+                                "PUT","DELETE");
+    }
+}
