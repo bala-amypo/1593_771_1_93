@@ -5,5 +5,5 @@ import com.example.demo.model.InteractionCheckResult;
 
 public interface InteractionService {
     InteractionCheckResult checkInteractions(List<Long> medicationIds);
-    InteractionCheckResult getResult(Long resultId);
+    InteractionCheckResultgetResult(Long resultId);
 }
