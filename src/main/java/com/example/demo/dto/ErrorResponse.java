@@ -1,17 +1,17 @@
-package com.example.demo.dto;
+// package com.example.demo.dto;
 
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 
-public class ErrorResponse{
+// public class ErrorResponse{
 
-    private String message;
-    private LocalDateTime time;
+//     private String message;
+//     private LocalDateTime time;
 
-    public ErrorResponse(String message) {
-        this.message = message;
-        this.time = LocalDateTime.now();
-    }
+//     public ErrorResponse(String message) {
+//         this.message = message;
+//         this.time = LocalDateTime.now();
+//     }
 
-    public String getMessage() { return message; }
-    public LocalDateTime getTime() { return time; }
-}
+//     public String getMessage() { return message; }
+//     public LocalDateTime getTime() { return time; }
+// }
