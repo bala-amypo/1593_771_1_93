@@ -4,13 +4,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import java.util.*;
 
-public class CustomerUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private final String username;
     private final String password;
     private final String role;
 
-    public CustomerUserDetails(
+    public CustomUserDetails(
             String username,
             String password,
             String role) {

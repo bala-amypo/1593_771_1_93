@@ -5,7 +5,7 @@ public class AuthResponse {
     private String token;
     private String type = "Bearer";
 
-    public AuthResponseDTO(String token) {
+    public AuthResponse(String token) {
         this.token = token;
     }
 

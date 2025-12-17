@@ -7,12 +7,12 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
 @Service
-public class CustomerUserDetailsService
+public class CustomUserDetailsService
         implements UserDetailsService {
 
     private final UserRepository userRepo;
 
-    public CustomerUserDetailsService(
+    public CustomUserDetailsService(
             UserRepository userRepo) {
         this.userRepo = userRepo;
     }

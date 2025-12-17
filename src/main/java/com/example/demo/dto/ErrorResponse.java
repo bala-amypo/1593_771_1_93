@@ -7,7 +7,7 @@ public class ErrorResponse{
     private String message;
     private LocalDateTime time;
 
-    public ErrorResponseDTO(String message) {
+    public ErrorResponse(String message) {
         this.message = message;
         this.time = LocalDateTime.now();
     }
