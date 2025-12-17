@@ -1,17 +1,17 @@
-package com.example.demo.config;
+// package com.example.demo.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.web.servlet.config.annotation.*;
 
-@Configuration
-public class WebConfig implements WebConfigurer {
+// @Configuration
+// public class WebConfig implements WebConfigurer {
 
-    @Override
-    public void addCorsMappings(
-            CorsRegistry registry) {
+//     @Override
+//     public void addCorsMappings(
+//             CorsRegistry registry) {
 
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*");
-    }
-}
+//         registry.addMapping("/**")
+//                 .allowedOrigins("*")
+//                 .allowedMethods("*");
+//     }
+// }
