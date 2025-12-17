@@ -1,28 +1,28 @@
-package com.example.demo.model;
+// package com.example.demo.model;
 
-import jakarta.persistence.*;
-import java.util.List;
+// import jakarta.persistence.*;
+// import java.util.List;
 
-@Entity
-public class Medication {
+// @Entity
+// public class Medication {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    private String name;
+//     private String name;
 
-    @ManyToMany
-    private List<ActiveIngredient> ingredients;
+//     @ManyToMany
+//     private List<ActiveIngredient> ingredients;
 
-    public Medication() {}
+//     public Medication() {}
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public List<ActiveIngredient> getIngredients() { return ingredients; }
+//     public Long getId() { return id; }
+//     public String getName() { return name; }
+//     public List<ActiveIngredient> getIngredients() { return ingredients; }
 
-    public void setName(String name) { this.name = name; }
-    public void setIngredients(List<ActiveIngredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-}
+//     public void setName(String name) { this.name = name; }
+//     public void setIngredients(List<ActiveIngredient> ingredients) {
+//         this.ingredients = ingredients;
+//     }
+// }

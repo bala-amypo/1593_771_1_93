@@ -1,20 +1,20 @@
-package com.example.demo.model;
+// package com.example.demo.model;
 
-import jakarta.persistence.*;
+// import jakarta.persistence.*;
 
-@Entity
-public class ActiveIngredient {
+// @Entity
+// public class ActiveIngredient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    @Column(unique = true)
-    private String name;
+//     @Column(unique = true)
+//     private String name;
 
-    public ActiveIngredient() {}
+//     public ActiveIngredient() {}
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-}
+//     public Long getId() { return id; }
+//     public String getName() { return name; }
+//     public void setName(String name) { this.name = name; }
+// }

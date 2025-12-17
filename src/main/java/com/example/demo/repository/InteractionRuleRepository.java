@@ -1,9 +1,9 @@
-package com.example.demo.repository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.model.InteractionRule;
+// package com.example.demo.repository;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import com.example.demo.model.InteractionRule;
 
-public interface InteractionRuleRepository
-        extends JpaRepository<InteractionRule, Long> {
+// public interface InteractionRuleRepository
+//         extends JpaRepository<InteractionRule, Long> {
 
-    InteractionRule findRuleBetweenIngredients(Long id1, Long id2);
-}
+//     InteractionRule findRuleBetweenIngredients(Long id1, Long id2);
+// }

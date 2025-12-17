@@ -1,10 +1,10 @@
-package com.example.demo.repository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.model.ActiveIngredient;
+// package com.example.demo.repository;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import com.example.demo.model.ActiveIngredient;
 
-public interface ActiveIngredientRepository
-        extends JpaRepository<ActiveIngredient, Long> {
+// public interface ActiveIngredientRepository
+//         extends JpaRepository<ActiveIngredient, Long> {
 
-    ActiveIngredient findByName(String name);
-    boolean existsByName(String name);
-}
+//     ActiveIngredient findByName(String name);
+//     boolean existsByName(String name);
+// }

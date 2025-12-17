@@ -1,10 +1,10 @@
-package com.example.demo.service;
+// package com.example.demo.service;
 
-import com.example.demo.dto.*;
-import com.example.demo.model.*;
+// import com.example.demo.dto.*;
+// import com.example.demo.model.*;
 
-public interface CatalogService {
+// public interface CatalogService {
 
-    ActiveIngredient createIngredient(IngredientDTO dto);
-    Medication createMedication(MedicationDTO dto);
-}
+//     ActiveIngredient createIngredient(IngredientDTO dto);
+//     Medication createMedication(MedicationDTO dto);
+// }
