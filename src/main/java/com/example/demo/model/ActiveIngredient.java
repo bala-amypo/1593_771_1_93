@@ -10,11 +10,10 @@ public class ActiveIngredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    public ActiveIngredient() {
-    }
+    public ActiveIngredient() {}
 
     public ActiveIngredient(String name) {
         this.name = name;
