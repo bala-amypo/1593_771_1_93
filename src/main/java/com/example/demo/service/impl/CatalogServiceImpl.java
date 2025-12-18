@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.ActiveIngredient;
 import com.example.demo.model.Medication;
 import com.example.demo.repository.ActiveIngredientRepository;
