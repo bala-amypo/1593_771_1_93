@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dto.IngredientDto;
-import com.example.demo.dto.MedicationDto;
 import com.example.demo.model.ActiveIngredient;
 import com.example.demo.model.Medication;
 import com.example.demo.repository.ActiveIngredientRepository;
@@ -23,21 +22,21 @@ public class CatalogController {
         this.catalogService = catalogService;
         this.ingredientRepository = ingredientRepository;
     }
-
     @PostMapping("/ingredient")
-    public ActiveIngredient addIngredient(@RequestBody IngredientDto dto) {
-        return catalogService.addIngredient(new ActiveIngredient(dto.getName()));
+    public ActiveIngredient addIngredient(@RequestBody ActiveIngredient ingredient) {
+        return catalogService.addIngredient(ingredient);
     }
-
     @PostMapping("/medication")
-    public Medication addMedication(@RequestBody MedicationDto dto) {
+    public Medication addMedication(@RequestBody Medication medication) {
 
-        Medication medication = new Medication(dto.getName());
+        Set<ActiveIngredient> resolvedIngredients =
+                medication.getIngredients().stream()
+                        .map(i -> ingredientRepository.findById(i.getId()).orElse(null))
+                        .filter(i -> i != null)
+                        .collect(java.util.stream.Collectors.toSet());
 
-        dto.getIngredientIds().forEach(id ->
-                ingredientRepository.findById(id)
-                        .ifPresent(medication::addIngredient)
-        );
+        medication.getIngredients().clear();
+        resolvedIngredients.forEach(medication::addIngredient);
 
         return catalogService.addMedication(medication);
     }
