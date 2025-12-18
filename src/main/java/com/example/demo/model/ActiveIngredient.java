@@ -1,35 +1,34 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import java.util.List;
+import jakarta.persistence.*;
 
-import org.springframework.web.bind.annotation.*;
+@Entity
+@Table(name = "active_ingredients")
+public class ActiveIngredient {
 
-import com.example.demo.model.ActiveIngredient;
-import com.example.demo.model.Medication;
-import com.example.demo.service.CatalogService;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@RestController
-@RequestMapping("/catalog")
-public class CatalogController {
+    @Column(unique = true, nullable = false)
+    private String name;
 
-    private final CatalogService catalogService;
-
-    public CatalogController(CatalogService catalogService) {
-        this.catalogService = catalogService;
+    public ActiveIngredient() {
     }
 
-    @PostMapping("/ingredient")
-    public ActiveIngredient addIngredient(@RequestBody ActiveIngredient ingredient) {
-        return catalogService.addIngredient(ingredient);
+    public ActiveIngredient(String name) {
+        this.name = name;
     }
 
-    @PostMapping("/medication")
-    public Medication addMedication(@RequestBody Medication medication) {
-        return catalogService.addMedication(medication);
+    public Long getId() {
+        return id;
     }
 
-    @GetMapping("/medications")
-    public List<Medication> getAllMedications() {
-        return catalogService.getAllMedications();
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
