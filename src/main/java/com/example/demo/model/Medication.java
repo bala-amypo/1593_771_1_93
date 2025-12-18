@@ -1,9 +1,11 @@
-// package com.example.demo.model;
+// package com.example.demo2.model;
 
 // import jakarta.persistence.*;
-// import java.util.List;
+// import java.util.HashSet;
+// import java.util.Set;
 
 // @Entity
+// @Table(name = "medications")
 // public class Medication {
 
 //     @Id
@@ -13,16 +15,50 @@
 //     private String name;
 
 //     @ManyToMany
-//     private List<ActiveIngredient> ingredients;
+//     @JoinTable(
+//         name = "medication_ingredients",
+//         joinColumns = @JoinColumn(name = "medication_id"),
+//         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+//     )
+//     private Set<ActiveIngredient> ingredients = new HashSet<>();
 
-//     public Medication() {}
-
-//     public Long getId() { return id; }
-//     public String getName() { return name; }
-//     public List<ActiveIngredient> getIngredients() { return ingredients; }
-
-//     public void setName(String name) { this.name = name; }
-//     public void setIngredients(List<ActiveIngredient> ingredients) {
-//         this.ingredients = ingredients;
+//     public Medication() {
 //     }
+
+//     public Medication(String name) {
+//         this.name = name;
+//         this.ingredients = new HashSet<>();
+//     }
+//     public void addIngredient(ActiveIngredient ingredient) {
+//         this.ingredients.add(ingredient);
+//     }
+
+//     public void removeIngredient(ActiveIngredient ingredient) {
+//         this.ingredients.remove(ingredient);
+//     }
+
+//     public long getId() {
+//         return id;
+//     }
+
+//     public void setId(long id) {
+//         this.id = id;
+//     }
+
+//     public String getName() {
+//         return name;
+//     }
+
+//     public void setName(String name) {
+//         this.name = name;
+//     }
+
+//     public String getIngredient() {
+//         return ingredient;
+//     }
+
+//     public void setIngredient(String ingredient) {
+//         this.ingredient = ingredient;
+//     }
+
 // }

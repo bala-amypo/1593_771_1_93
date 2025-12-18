@@ -1,35 +1,67 @@
-package com.example.demo.model;
+// package com.example.demo2.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+// import jakarta.persistence.*;
+// import java.time.LocalDateTime;
 
-@Entity
-public class InteractionCheckResult {
+// @Entity
+// @Table(name = "interaction_check_results")
+// public class InteractionCheckResult {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    private String medications;
-    private String interactions;
+//     @Lob
+//     private String medications;
 
-    private LocalDateTime checkedAt;
+//     @Lob
+//     private String interactions;
 
-    @PrePersist
-    public void assignTime() {
-        checkedAt = LocalDateTime.now();
-    }
+//     private LocalDateTime checkedAt;
 
-    public Long getId() { return id; }
-    public String getMedications() { return medications; }
-    public String getInteractions() { return interactions; }
-    public LocalDateTime getCheckedAt() { return checkedAt; }
+//     public InteractionCheckResult() {
+//     }
 
-    public void setMedications(String medications) {
-        this.medications = medications;
-    }
+//     public InteractionCheckResult(String medications, String interactions) {
+//         this.medications = medications;
+//         this.interactions = interactions;
+//     }
 
-    public void setInteractions(String interactions) {
-        this.interactions = interactions;
-    }
-}
+//     @PrePersist
+//     public void onCreate() {
+//         this.checkedAt = LocalDateTime.now();
+//     }
+
+//     public Long getId() {
+//         return id;
+//     }
+
+//     public String getMedications() {
+//         return medications;
+//     }
+
+//     public String getInteractions() {
+//         return interactions;
+//     }
+
+//     public LocalDateTime getCheckedAt() {
+//         return checkedAt;
+//     }
+
+//     public void setId(Long id) {
+//         this.id = id;
+//     }
+
+//     public void setMedications(String medications) {
+//         this.medications = medications;
+//     }
+
+//     public void setInteractions(String interactions) {
+//         this.interactions = interactions;
+//     }
+
+//     public void setCheckedAt(LocalDateTime checkedAt) {
+//         this.checkedAt = checkedAt;
+//     }
+
+// }
