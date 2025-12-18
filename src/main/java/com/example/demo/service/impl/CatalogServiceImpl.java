@@ -31,13 +31,9 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public Medication addMedication(Medication medication) {
-
-        if (medication.getIngredients() == null ||
-            medication.getIngredients().isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Medication must contain at least one ingredient");
+        if (medication.getIngredients() == null || medication.getIngredients().isEmpty()) {
+            throw new IllegalArgumentException("Medication must contain at least one ingredient");
         }
-
         return medicationRepository.save(medication);
     }
 
@@ -45,4 +41,5 @@ public class CatalogServiceImpl implements CatalogService {
     public List<Medication> getAllMedications() {
         return medicationRepository.findAll();
     }
+    
 }

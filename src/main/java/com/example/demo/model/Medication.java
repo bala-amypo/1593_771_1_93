@@ -27,8 +27,24 @@ public class Medication {
 
     public Medication(String name) {
         this.name = name;
-        this.ingredients = new HashSet<>();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<ActiveIngredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void addIngredient(ActiveIngredient ingredient) {
         this.ingredients.add(ingredient);
     }
@@ -36,29 +52,4 @@ public class Medication {
     public void removeIngredient(ActiveIngredient ingredient) {
         this.ingredients.remove(ingredient);
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient(String ingredient) {
-        this.ingredient = ingredient;
-    }
-
 }

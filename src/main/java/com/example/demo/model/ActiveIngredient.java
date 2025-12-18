@@ -1,42 +1,35 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
+import java.util.List;
 
-@Entity
-@Table(
-    name = "active_ingredients",
-    uniqueConstraints = @UniqueConstraint(columnNames = "name")
-)
-public class ActiveIngredient {
+import org.springframework.web.bind.annotation.*;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.model.ActiveIngredient;
+import com.example.demo.model.Medication;
+import com.example.demo.service.CatalogService;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+@RestController
+@RequestMapping("/catalog")
+public class CatalogController {
 
-    public ActiveIngredient() {
+    private final CatalogService catalogService;
+
+    public CatalogController(CatalogService catalogService) {
+        this.catalogService = catalogService;
     }
 
-    public ActiveIngredient(String name) {
-        this.name = name;
+    @PostMapping("/ingredient")
+    public ActiveIngredient addIngredient(@RequestBody ActiveIngredient ingredient) {
+        return catalogService.addIngredient(ingredient);
     }
 
-    public Long getId() {
-        return id;
+    @PostMapping("/medication")
+    public Medication addMedication(@RequestBody Medication medication) {
+        return catalogService.addMedication(medication);
     }
 
-    public String getName() {
-        return name;
+    @GetMapping("/medications")
+    public List<Medication> getAllMedications() {
+        return catalogService.getAllMedications();
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }
