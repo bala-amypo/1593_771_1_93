@@ -1,4 +1,4 @@
-// package com.example.demo2.repository;
+// package com.example.demo.repository;
 
 // import java.util.Optional;
 // import org.springframework.data.jpa.repository.JpaRepository;
