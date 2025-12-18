@@ -1,15 +1,12 @@
 spring.application.name=demo
-# Don't change the port
 server.port = 9001
-# for https
 server.forward-headers-strategy=framework 
 
-spring.datasource.url=jdbc:mysql://localhost:3306/user_db?createDatabaseIfNotExist=true
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb?createDatabaseIfNotExist=true
 spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.username=root
 spring.datasource.password=Amypo
 
-# JPA Configuration
 spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
