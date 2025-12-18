@@ -1,33 +1,49 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
-// import org.springframework.web.bind.annotation.*;
-// import com.example.demo.dto.*;
-// import com.example.demo.model.*;
-// import com.example.demo.service.CatalogService;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/catalog")
-// public class CatalogController {
+import com.example.demo.dto.IngredientDto;
+import com.example.demo.dto.MedicationDto;
+import com.example.demo.model.ActiveIngredient;
+import com.example.demo.model.Medication;
+import com.example.demo.repository.ActiveIngredientRepository;
+import com.example.demo.service.CatalogService;
 
-//     private final CatalogService service;
+@RestController
+@RequestMapping("/catalog")
+public class CatalogController {
 
-//     public CatalogController(CatalogService service) {
-//         this.service = service;
-//     }
+    private final CatalogService catalogService;
+    private final ActiveIngredientRepository ingredientRepository;
 
-//     @PostMapping("/ingredient")
-//     public ActiveIngredient addIngredient(
-//             @RequestBody IngredientDTO dto) {
-//         return service.createIngredient(dto);
-//     }
+    public CatalogController(CatalogService catalogService,
+                             ActiveIngredientRepository ingredientRepository) {
+        this.catalogService = catalogService;
+        this.ingredientRepository = ingredientRepository;
+    }
 
-//     @PostMapping("/medication")
-//     public Medication addMedication(
-//             @RequestBody MedicationDTO dto) {
-//         return service.createMedication(dto);
-//     }
-// }
+    @PostMapping("/ingredient")
+    public ActiveIngredient addIngredient(@RequestBody IngredientDto dto) {
+        return catalogService.addIngredient(new ActiveIngredient(dto.getName()));
+    }
+
+    @PostMapping("/medication")
+    public Medication addMedication(@RequestBody MedicationDto dto) {
+
+        Medication medication = new Medication(dto.getName());
+
+        dto.getIngredientIds().forEach(id ->
+                ingredientRepository.findById(id)
+                        .ifPresent(medication::addIngredient)
+        );
+
+        return catalogService.addMedication(medication);
+    }
+
+    @GetMapping("/medications")
+    public List<Medication> getAllMedications() {
+        return catalogService.getAllMedications();
+    }
+}
