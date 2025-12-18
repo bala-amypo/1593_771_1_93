@@ -1,22 +1,17 @@
 package com.example.demo.controller;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService,
-                          PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
@@ -25,16 +20,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User request) {
+    public String login(@RequestBody User user) {
 
-        User user = userService.findByEmail(request.getEmail());
+        User dbUser = userService.findByEmail(user.getEmail());
 
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+        if (dbUser == null) {
+            return "User not found";
         }
 
-        return "Login successful for user: " + user.getEmail();
+        if (!dbUser.getPassword().equals(user.getPassword())) {
+            return "Invalid credentials";
+        }
+
+        return "Login successful";
     }
 }
