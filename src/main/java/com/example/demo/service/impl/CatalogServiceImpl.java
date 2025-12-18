@@ -1,48 +1,49 @@
-// package com.example.demo.service;
+package com.example.demo.service.impl;
 
-// import org.springframework.stereotype.Service;
-// import java.util.*;
+import java.util.List;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.ActiveIngredient;
+import com.example.demo.model.Medication;
+import com.example.demo.repository.ActiveIngredientRepository;
+import com.example.demo.repository.MedicationRepository;
+import com.example.demo.service.CatalogService;
 
-// import com.example.demo.dto.*;
-// import com.example.demo.model.*;
-// import com.example.demo.repository.*;
+public class CatalogServiceImpl implements CatalogService {
 
-// @Service
-// public class CatalogServiceImpl implements CatalogService {
+    private final ActiveIngredientRepository ingredientRepository;
+    private final MedicationRepository medicationRepository;
 
-//     private final ActiveIngredientRepository ingredientRepo;
-//     private final MedicationRepository medicationRepo;
+    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepository,
+                              MedicationRepository medicationRepository) {
+        this.ingredientRepository = ingredientRepository;
+        this.medicationRepository = medicationRepository;
+    }
 
-//     public CatalogServiceImpl(
-//             ActiveIngredientRepository ingredientRepo,
-//             MedicationRepository medicationRepo) {
-//         this.ingredientRepo = ingredientRepo;
-//         this.medicationRepo = medicationRepo;
-//     }
+    @Override
+    public ActiveIngredient addIngredient(ActiveIngredient ingredient) {
 
-//     @Override
-//     public ActiveIngredient createIngredient(IngredientDTO dto) {
+        if (ingredientRepository.existsByName(ingredient.getName())) {
+            throw new IllegalArgumentException(
+                    "Ingredient already exists: " + ingredient.getName());
+        }
 
-//         if (ingredientRepo.existsByName(dto.getName())) {
-//             return ingredientRepo.findByName(dto.getName());
-//         }
+        return ingredientRepository.save(ingredient);
+    }
 
-//         ActiveIngredient ingredient = new ActiveIngredient();
-//         ingredient.setName(dto.getName());
+    @Override
+    public Medication addMedication(Medication medication) {
 
-//         return ingredientRepo.save(ingredient);
-//     }
+        if (medication.getIngredients() == null ||
+            medication.getIngredients().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Medication must contain at least one ingredient");
+        }
 
-//     @Override
-//     public Medication createMedication(MedicationDTO dto) {
+        return medicationRepository.save(medication);
+    }
 
-//         Medication med = new Medication();
-//         med.setName(dto.getName());
-
-//         List<ActiveIngredient> ingredients =
-//                 ingredientRepo.findAllById(dto.getIngredientIds());
-
-//         med.setIngredients(ingredients);
-//         return medicationRepo.save(med);
-//     }
-// }
+    @Override
+    public List<Medication> getAllMedications() {
+        return medicationRepository.findAll();
+    }
+}

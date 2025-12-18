@@ -1,10 +1,14 @@
-// package com.example.demo.service;
+package com.example.demo.service;
 
-// import com.example.demo.dto.*;
-// import com.example.demo.model.*;
+import java.util.List;
+import com.example.demo.model.ActiveIngredient;
+import com.example.demo.model.Medication;
 
-// public interface CatalogService {
+public interface CatalogService {
 
-//     ActiveIngredient createIngredient(IngredientDTO dto);
-//     Medication createMedication(MedicationDTO dto);
-// }
+    ActiveIngredient addIngredient(ActiveIngredient ingredient);
+
+    Medication addMedication(Medication medication);
+
+    List<Medication> getAllMedications();
+}
