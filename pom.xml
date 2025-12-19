@@ -85,11 +85,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Security (needed for PasswordEncoder errors you had) -->
+		<!-- Swagger / OpenAPI -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
+		<!-- Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
 
 
     </dependencies>
