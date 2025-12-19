@@ -20,6 +20,7 @@ public class SecurityConfig {
                 // Allow Swagger UI & API docs
                 .requestMatchers(
                         "/swagger-ui/**",
+                        "/swagger-ui/index.html",
                         "/swagger-ui.html",
                         "/v3/api-docs/**"
                 ).permitAll()
