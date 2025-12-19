@@ -3,8 +3,6 @@ package com.example.demo.exception;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 
-import com.example.demo.dto.ErrorResponseDTO;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
