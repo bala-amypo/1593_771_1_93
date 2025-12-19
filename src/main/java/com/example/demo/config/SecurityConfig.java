@@ -1,41 +1,64 @@
-// package com.example.demo.config;
+package com.example.demo.config;
 
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import org.springframework.security.web.SecurityFilterChain;
+import com.example.demo.security.JwtAuthenticationFilter;
 
-// @Configuration
-// public class SecurityConfig {
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-//     @Bean
-//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-//         http
-//             // Disable CSRF for APIs
-//             .csrf(csrf -> csrf.disable())
+@Configuration
+public class SecurityConfig {
 
-//             // Authorization rules
-//             .authorizeHttpRequests(auth -> auth
-//                 // Allow Swagger UI & API docs
-//                 .requestMatchers(
-//                         "/swagger-ui/**",
-//                         "/swagger-ui/index.html",
-//                         "/swagger-ui.html",
-//                         "/v3/api-docs/**"
-//                 ).permitAll()
+    private final JwtAuthenticationFilter jwtFilter;
 
-//                 // Allow auth endpoints
-//                 .requestMatchers("/auth/**").permitAll()
+    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
-//                 // Allow everything else (for learning/demo)
-//                 .anyRequest().permitAll()
-//             )
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-//             // No login form, no basic auth
-//             .httpBasic(httpBasic -> httpBasic.disable())
-//             .formLogin(form -> form.disable());
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 
-//         return http.build();
-//     }
-// }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                // ✅ Swagger & OpenAPI – PUBLIC
+                .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                ).permitAll()
+
+                // ✅ Auth endpoints – PUBLIC
+                .requestMatchers(
+                        "/auth/register",
+                        "/auth/login"
+                ).permitAll()
+
+                // 🔒 Everything else secured
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+}
