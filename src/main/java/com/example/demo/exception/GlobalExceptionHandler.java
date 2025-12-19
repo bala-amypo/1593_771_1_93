@@ -1,28 +1,28 @@
-// package com.example.demo.exception;
+package com.example.demo.exception;
 
-// import org.springframework.web.bind.annotation.*;
-// import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
 
-// import com.example.demo.dto.ErrorResponseDTO;
+import com.example.demo.dto.ErrorResponseDTO;
 
-// @RestControllerAdvice
-// public class GlobalExceptionHandler {
+@RestControllerAdvice
+public class GlobalExceptionHandler {
 
-//     @ExceptionHandler(ResourceNotFoundException.class)
-//     public ResponseEntity<ErrorResponseDTO>
-//     handleNotFound(ResourceNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO>
+    handleNotFound(ResourceNotFoundException ex) {
 
-//         return new ResponseEntity<>(
-//                 new ErrorResponseDTO(ex.getMessage()),
-//                 HttpStatus.NOT_FOUND);
-//     }
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(ex.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
 
-//     @ExceptionHandler(Exception.class)
-//     public ResponseEntity<ErrorResponseDTO>
-//     handleGeneric(Exception ex) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO>
+    handleGeneric(Exception ex) {
 
-//         return new ResponseEntity<>(
-//                 new ErrorResponseDTO(ex.getMessage()),
-//                 HttpStatus.BAD_REQUEST);
-//     }
-// }
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+}

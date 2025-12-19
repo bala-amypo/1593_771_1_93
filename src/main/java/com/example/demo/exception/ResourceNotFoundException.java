@@ -1,14 +1,14 @@
-// package com.example.demo.exception;
+package com.example.demo.exception;
 
-// public class ResourceNotFoundException
-//         extends RuntimeException {
+public class ResourceNotFoundException
+        extends RuntimeException {
 
-//     public ResourceNotFoundException(
-//             String resource,
-//             String field,
-//             Object value) {
+    public ResourceNotFoundException(
+            String resource,
+            String field,
+            Object value) {
 
-//         super(resource + " not found with "
-//                 + field + " : " + value);
-//     }
-// }
+        super(resource + " not found with "
+                + field + " : " + value);
+    }
+}
