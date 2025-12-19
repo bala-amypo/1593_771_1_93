@@ -6,7 +6,7 @@ import com.example.demo.model.Medication;
 import com.example.demo.repository.ActiveIngredientRepository;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.service.CatalogService;
-
+@Service
 public class CatalogServiceImpl implements CatalogService {
 
     private final ActiveIngredientRepository ingredientRepository;
