@@ -1,6 +1,6 @@
-package com.example.demo2.service;
+package com.example.demo.service;
 
-import com.example.demo2.model.InteractionRule;
+import com.example.demo.model.InteractionRule;
 
 public interface RuleService {
 
