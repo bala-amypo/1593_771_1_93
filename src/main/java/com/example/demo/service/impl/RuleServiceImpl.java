@@ -19,7 +19,7 @@ import jakarta.persistence.UniqueConstraint;
         @UniqueConstraint(columnNames = {"ingredient_a_id", "ingredient_b_id"})
     }
 )
-public class InteractionRule {
+public class RuleServiceImpl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
