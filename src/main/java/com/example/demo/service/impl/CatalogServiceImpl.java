@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -16,34 +18,37 @@ public class CatalogServiceImpl implements CatalogService {
     private final ActiveIngredientRepository ingredientRepository;
     private final MedicationRepository medicationRepository;
 
-    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepository,
-                              MedicationRepository medicationRepository) {
+    public CatalogServiceImpl(
+            ActiveIngredientRepository ingredientRepository,
+            MedicationRepository medicationRepository) {
         this.ingredientRepository = ingredientRepository;
         this.medicationRepository = medicationRepository;
     }
 
     @Override
     public ActiveIngredient addIngredient(ActiveIngredient ingredient) {
-
-        if (ingredientRepository.existsByName(ingredient.getName())) {
-            throw new IllegalArgumentException(
-                    "Active ingredient already exists: " + ingredient.getName()
-            );
-        }
-
         return ingredientRepository.save(ingredient);
     }
 
     @Override
     public Medication addMedication(Medication medication) {
 
-        if (medication.getIngredients() == null ||
-            medication.getIngredients().isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Medication must contain at least one ingredient"
-            );
+        Set<ActiveIngredient> managedIngredients = new HashSet<>();
+
+        for (ActiveIngredient ing : medication.getIngredients()) {
+
+            if (ing.getId() != null) {
+                managedIngredients.add(
+                        ingredientRepository.findById(ing.getId())
+                                .orElseThrow(() ->
+                                        new RuntimeException("Ingredient not found: " + ing.getId()))
+                );
+            } else {
+                managedIngredients.add(ingredientRepository.save(ing));
+            }
         }
 
+        medication.setIngredients(managedIngredients);
         return medicationRepository.save(medication);
     }
 
