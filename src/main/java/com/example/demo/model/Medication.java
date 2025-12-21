@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo2.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,6 @@ public class Medication {
 
     private String name;
 
-    // ✅ VERY IMPORTANT: CascadeType.PERSIST
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "medication_ingredients",
@@ -25,10 +24,6 @@ public class Medication {
     private Set<ActiveIngredient> ingredients = new HashSet<>();
 
     public Medication() {}
-
-    public Medication(String name) {
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
