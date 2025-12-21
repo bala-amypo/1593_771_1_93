@@ -1,6 +1,6 @@
-package com.example.demo2.service;
+package com.example.demo.service;
 
-import com.example.demo2.model.User;
+import com.example.demo.model.User;
 
 public interface UserService {
 
