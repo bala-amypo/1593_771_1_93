@@ -1,9 +1,9 @@
-package com.example.demo2.service;
+package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo2.model.ActiveIngredient;
-import com.example.demo2.model.Medication;
+import com.example.demo.model.ActiveIngredient;
+import com.example.demo.model.Medication;
 
 public interface CatalogService {
 
