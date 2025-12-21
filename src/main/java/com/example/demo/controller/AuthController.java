@@ -22,11 +22,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody User request) {
+
         User user = userService.findByEmail(request.getEmail());
 
         if (!user.getPassword().equals(request.getPassword())) {
             return "Invalid email or password";
         }
+
         return "Login successful for user: " + user.getEmail();
     }
 }

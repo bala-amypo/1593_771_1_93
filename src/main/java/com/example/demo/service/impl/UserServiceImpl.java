@@ -19,19 +19,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
 
+        user.setId(null);  // 🔥 CRITICAL: forces INSERT
+
         if (user.getRole() == null) {
             user.setRole("USER");
         }
+
         return userRepository.save(user);
     }
 
     @Override
     public User findByEmail(String email) {
-
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
-                                "User not found with email: " + email
-                        ));
+                                "User not found with email: " + email));
     }
 }
