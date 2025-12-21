@@ -3,14 +3,7 @@ package com.example.demo.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "medications")
@@ -22,7 +15,7 @@ public class Medication {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "medication_ingredients",
         joinColumns = @JoinColumn(name = "medication_id"),
@@ -36,25 +29,25 @@ public class Medication {
         this.name = name;
     }
 
-    // ✅ REQUIRED
+    // getters & setters
     public Long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<ActiveIngredient> getIngredients() {
-        return ingredients;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<ActiveIngredient> getIngredients() {
+        return ingredients;
     }
 
     public void setIngredients(Set<ActiveIngredient> ingredients) {
