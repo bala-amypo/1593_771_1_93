@@ -1,95 +1,64 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.model.ActiveIngredient;
+import com.example.demo.model.InteractionRule;
+import com.example.demo.repository.ActiveIngredientRepository;
+import com.example.demo.repository.InteractionRuleRepository;
+import com.example.demo.service.RuleService;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+@Service
+@Transactional
+public class RuleServiceImpl implements RuleService {
 
-@Entity
-@Table(
-    name = "interaction_rules",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"ingredient_a_id", "ingredient_b_id"})
-    }
-)
-public class RuleServiceImpl {
+    private final InteractionRuleRepository ruleRepository;
+    private final ActiveIngredientRepository ingredientRepository;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ingredient_a_id")
-    private ActiveIngredient ingredientA;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ingredient_b_id")
-    private ActiveIngredient ingredientB;
-
-    @Column(nullable = false)
-    private String severity; // MINOR, MODERATE, MAJOR
-
-    private String description;
-
-    public InteractionRule() {}
-
-    public InteractionRule(
-            ActiveIngredient ingredientA,
-            ActiveIngredient ingredientB,
-            String severity,
-            String description) {
-        this.ingredientA = ingredientA;
-        this.ingredientB = ingredientB;
-        this.severity = severity;
-        this.description = description;
+    public RuleServiceImpl(
+            InteractionRuleRepository ruleRepository,
+            ActiveIngredientRepository ingredientRepository) {
+        this.ruleRepository = ruleRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
-    // ✅ REQUIRED GETTERS
-    public Long getId() {
-        return id;
+    /**
+     * Save a new interaction rule
+     */
+    @Override
+    public InteractionRule saveRule(InteractionRule rule) {
+        rule.setId(null); // force INSERT
+        return ruleRepository.save(rule);
     }
 
-    public ActiveIngredient getIngredientA() {
-        return ingredientA;
+    /**
+     * Find interaction rule between two ingredients
+     */
+    @Override
+    public Optional<InteractionRule> findRule(
+            Long ingredientAId,
+            Long ingredientBId) {
+
+        ActiveIngredient a = ingredientRepository.findById(ingredientAId)
+                .orElseThrow(() -> new RuntimeException("Ingredient A not found"));
+
+        ActiveIngredient b = ingredientRepository.findById(ingredientBId)
+                .orElseThrow(() -> new RuntimeException("Ingredient B not found"));
+
+        // Check both directions (A-B or B-A)
+        return ruleRepository.findByIngredientAAndIngredientB(a, b)
+                .or(() -> ruleRepository.findByIngredientAAndIngredientB(b, a));
     }
 
-    public ActiveIngredient getIngredientB() {
-        return ingredientB;
-    }
-
-    public String getSeverity() {
-        return severity;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    // ✅ REQUIRED SETTERS
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setIngredientA(ActiveIngredient ingredientA) {
-        this.ingredientA = ingredientA;
-    }
-
-    public void setIngredientB(ActiveIngredient ingredientB) {
-        this.ingredientB = ingredientB;
-    }
-
-    public void setSeverity(String severity) {
-        this.severity = severity;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    /**
+     * Get all interaction rules
+     */
+    @Override
+    public List<InteractionRule> getAllRules() {
+        return ruleRepository.findAll();
     }
 }
