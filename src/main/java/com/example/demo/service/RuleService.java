@@ -7,7 +7,7 @@ import com.example.demo.model.InteractionRule;
 
 public interface RuleService {
 
-    InteractionRule saveRule(InteractionRule rule);
+    InteractionRule addRule(InteractionRule rule);
 
     Optional<InteractionRule> findRule(Long ingredientAId, Long ingredientBId);
 

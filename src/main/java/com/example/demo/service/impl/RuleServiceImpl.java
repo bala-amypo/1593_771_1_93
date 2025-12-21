@@ -26,18 +26,12 @@ public class RuleServiceImpl implements RuleService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    /**
-     * Save a new interaction rule
-     */
     @Override
-    public InteractionRule saveRule(InteractionRule rule) {
+    public InteractionRule addRule(InteractionRule rule) {
         rule.setId(null); // force INSERT
         return ruleRepository.save(rule);
     }
 
-    /**
-     * Find interaction rule between two ingredients
-     */
     @Override
     public Optional<InteractionRule> findRule(
             Long ingredientAId,
@@ -49,14 +43,10 @@ public class RuleServiceImpl implements RuleService {
         ActiveIngredient b = ingredientRepository.findById(ingredientBId)
                 .orElseThrow(() -> new RuntimeException("Ingredient B not found"));
 
-        // Check both directions (A-B or B-A)
         return ruleRepository.findByIngredientAAndIngredientB(a, b)
                 .or(() -> ruleRepository.findByIngredientAAndIngredientB(b, a));
     }
 
-    /**
-     * Get all interaction rules
-     */
     @Override
     public List<InteractionRule> getAllRules() {
         return ruleRepository.findAll();
