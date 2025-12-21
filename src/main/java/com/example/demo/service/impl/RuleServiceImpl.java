@@ -1,6 +1,10 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.ActiveIngredient;
 import com.example.demo.model.InteractionRule;
@@ -9,6 +13,7 @@ import com.example.demo.repository.InteractionRuleRepository;
 import com.example.demo.service.RuleService;
 
 @Service
+@Transactional
 public class RuleServiceImpl implements RuleService {
 
     private final InteractionRuleRepository ruleRepository;
@@ -23,39 +28,27 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public InteractionRule addRule(InteractionRule rule) {
-
-        Long aId = rule.getIngredientA().getId();
-        Long bId = rule.getIngredientB().getId();
-
-        if (aId == null || aId <= 0 || bId == null || bId <= 0) {
-            throw new IllegalArgumentException(
-                    "Ingredient IDs must be existing (> 0)");
-        }
-
-        ActiveIngredient ingredientA =
-                ingredientRepository.findById(aId)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "Ingredient A not found: " + aId));
-
-        ActiveIngredient ingredientB =
-                ingredientRepository.findById(bId)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "Ingredient B not found: " + bId));
-
-        // prevent duplicate rule
-        ruleRepository.findByIngredientAAndIngredientB(
-                ingredientA, ingredientB
-        ).ifPresent(r -> {
-            throw new IllegalArgumentException(
-                    "Interaction rule already exists");
-        });
-
-        rule.setId(null);
-        rule.setIngredientA(ingredientA);
-        rule.setIngredientB(ingredientB);
-
+        rule.setId(null); // force INSERT
         return ruleRepository.save(rule);
+    }
+
+    @Override
+    public Optional<InteractionRule> findRule(
+            Long ingredientAId,
+            Long ingredientBId) {
+
+        ActiveIngredient a = ingredientRepository.findById(ingredientAId)
+                .orElseThrow(() -> new RuntimeException("Ingredient A not found"));
+
+        ActiveIngredient b = ingredientRepository.findById(ingredientBId)
+                .orElseThrow(() -> new RuntimeException("Ingredient B not found"));
+
+        return ruleRepository.findByIngredientAAndIngredientB(a, b)
+                .or(() -> ruleRepository.findByIngredientAAndIngredientB(b, a));
+    }
+
+    @Override
+    public List<InteractionRule> getAllRules() {
+        return ruleRepository.findAll();
     }
 }

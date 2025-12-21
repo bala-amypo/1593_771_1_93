@@ -1,72 +1,77 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(
-    name = "interaction_rules",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"ingredienta_id", "ingredientb_id"})
-    }
-)
+@Table(name = "interaction_rules")
 public class InteractionRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ingredienta_id")
+    @ManyToOne
     private ActiveIngredient ingredientA;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ingredientb_id")
+    @ManyToOne
     private ActiveIngredient ingredientB;
 
-    @Column(nullable = false)
-    private String severity; // MINOR, MODERATE, MAJOR
-
+    private String severity;
     private String description;
 
     public InteractionRule() {}
 
+    public InteractionRule(ActiveIngredient a, ActiveIngredient b, String severity, String description) {
+        this.ingredientA = a;
+        this.ingredientB = b;
+        this.severity = severity;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
-    }
-
-    public ActiveIngredient getIngredientA() {
-        return ingredientA;
-    }
-
-    public ActiveIngredient getIngredientB() {
-        return ingredientB;
-    }
-
-    public String getSeverity() {
-        return severity;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public ActiveIngredient getIngredientA() {
+        return ingredientA;
+    }
+
     public void setIngredientA(ActiveIngredient ingredientA) {
         this.ingredientA = ingredientA;
+    }
+
+    public ActiveIngredient getIngredientB() {
+        return ingredientB;
     }
 
     public void setIngredientB(ActiveIngredient ingredientB) {
         this.ingredientB = ingredientB;
     }
 
+    public String getSeverity() {
+        return severity;
+    }
+
     public void setSeverity(String severity) {
         this.severity = severity;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

@@ -10,9 +10,8 @@ import com.example.demo.model.InteractionRule;
 public interface InteractionRuleRepository
         extends JpaRepository<InteractionRule, Long> {
 
-    Optional<InteractionRule>
-        findByIngredientAAndIngredientB(
+    Optional<InteractionRule> findByIngredientAAndIngredientB(
             ActiveIngredient ingredientA,
             ActiveIngredient ingredientB
-        );
+    );
 }
