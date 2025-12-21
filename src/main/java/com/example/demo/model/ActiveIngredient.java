@@ -1,11 +1,6 @@
-package com.example.demo.model;
+package com.example.demo2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "active_ingredients")
@@ -15,7 +10,7 @@ public class ActiveIngredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     public ActiveIngredient() {}
@@ -24,7 +19,6 @@ public class ActiveIngredient {
         this.name = name;
     }
 
-    // ✅ REQUIRED
     public Long getId() {
         return id;
     }
