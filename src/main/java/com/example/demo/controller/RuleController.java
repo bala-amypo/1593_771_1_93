@@ -2,11 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.InteractionRule;
 import com.example.demo.service.RuleService;
@@ -21,20 +17,11 @@ public class RuleController {
         this.ruleService = ruleService;
     }
 
-    /**
-     * POST /rules
-     * Add an interaction rule
-     */
     @PostMapping
-    public InteractionRule addRule(
-            @RequestBody InteractionRule rule) {
+    public InteractionRule addRule(@RequestBody InteractionRule rule) {
         return ruleService.addRule(rule);
     }
 
-    /**
-     * GET /rules
-     * Get all interaction rules
-     */
     @GetMapping
     public List<InteractionRule> getAllRules() {
         return ruleService.getAllRules();
