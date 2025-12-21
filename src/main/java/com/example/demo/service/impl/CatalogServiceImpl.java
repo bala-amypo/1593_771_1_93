@@ -27,6 +27,7 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public ActiveIngredient addIngredient(ActiveIngredient ingredient) {
+        ingredient.setId(null); // 🔐 safety
         return ingredientRepository.save(ingredient);
     }
 
@@ -37,18 +38,22 @@ public class CatalogServiceImpl implements CatalogService {
 
         for (ActiveIngredient ing : medication.getIngredients()) {
 
-            if (ing.getId() != null) {
+            // ✅ Treat id = 0 as NEW
+            if (ing.getId() == null || ing.getId() <= 0) {
+                ing.setId(null);
+                managedIngredients.add(ingredientRepository.save(ing));
+            } else {
                 managedIngredients.add(
                         ingredientRepository.findById(ing.getId())
                                 .orElseThrow(() ->
-                                        new RuntimeException("Ingredient not found: " + ing.getId()))
+                                        new RuntimeException(
+                                                "Ingredient not found: " + ing.getId()))
                 );
-            } else {
-                managedIngredients.add(ingredientRepository.save(ing));
             }
         }
 
         medication.setIngredients(managedIngredients);
+        medication.setId(null); // 🔐 safety
         return medicationRepository.save(medication);
     }
 

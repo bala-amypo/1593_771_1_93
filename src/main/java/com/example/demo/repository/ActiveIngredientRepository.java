@@ -1,7 +1,7 @@
-package com.example.demo2.repository;
+package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo2.model.ActiveIngredient;
+import com.example.demo.model.ActiveIngredient;
 
 public interface ActiveIngredientRepository
         extends JpaRepository<ActiveIngredient, Long> {
