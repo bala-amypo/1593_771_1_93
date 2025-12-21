@@ -1,4 +1,4 @@
-package com.example.demo2.controller;
+package com.example.demo.controller;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo2.model.InteractionRule;
-import com.example.demo2.service.RuleService;
+import com.example.demo.model.InteractionRule;
+import com.example.demo.service.RuleService;
 
 @RestController
 @RequestMapping("/rules")

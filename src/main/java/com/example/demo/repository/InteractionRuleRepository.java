@@ -1,11 +1,11 @@
-package com.example.demo2.repository;
+package com.example.demo.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.example.demo2.model.InteractionRule;
+import com.example.demo.model.InteractionRule;
 
 public interface InteractionRuleRepository
         extends JpaRepository<InteractionRule, Long> {

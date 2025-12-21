@@ -1,6 +1,6 @@
-package com.example.demo2.service.impl;
+package com.example.demo.service.impl;
 
-import com.example.demo2.model.ActiveIngredient;
+import com.example.demo.model.ActiveIngredient;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
