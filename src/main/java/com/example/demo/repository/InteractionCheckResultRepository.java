@@ -6,5 +6,4 @@ import com.example.demo.model.InteractionCheckResult;
 
 public interface InteractionCheckResultRepository
         extends JpaRepository<InteractionCheckResult, Long> {
-    // Uses save, findById, findAll
 }
