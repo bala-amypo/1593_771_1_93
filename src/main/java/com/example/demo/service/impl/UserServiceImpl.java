@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
 
-        user.setId(null);  // 🔥 CRITICAL: forces INSERT
+        user.setId(null);  
 
         if (user.getRole() == null) {
             user.setRole("USER");
