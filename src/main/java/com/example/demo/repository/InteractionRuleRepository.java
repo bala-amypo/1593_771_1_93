@@ -34,4 +34,5 @@ public interface InteractionRuleRepository extends JpaRepository<InteractionRule
            OR (r.ingredientA.id = :b AND r.ingredientB.id = :a)
     """)
     Optional<InteractionRule> findRuleBetweenIngredients(Long a, Long b);
+   InteractionRule findByid(Long id);
 }
