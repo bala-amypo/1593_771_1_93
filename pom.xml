@@ -61,8 +61,6 @@
 </dependency>
 
 
-<dependencies>
-
     <!-- Spring Boot Web -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -106,9 +104,6 @@
         <version>0.11.5</version>
         <scope>runtime</scope>
     </dependency>
-
-</dependencies>
-
 
 	</dependencies>
 
