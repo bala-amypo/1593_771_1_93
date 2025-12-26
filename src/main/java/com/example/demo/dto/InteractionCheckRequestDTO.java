@@ -1,11 +1,14 @@
 package com.example.demo.dto;
 
 import lombok.Data;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class EvaluateRequest {
-    private List<Long> medicationIds;
-    private List<String> drugCodes; // For SRS compatibility
-    private boolean runAsync = false;
+public class InteractionCheckResultDto {
+    private Long resultId;
+    private String medicationNames;
+    private List<InteractionDto> matchedInteractions;
+    private String highestSeverity;
+    private LocalDateTime checkedAt;
 }
