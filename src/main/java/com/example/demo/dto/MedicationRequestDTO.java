@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MedicationRequestDto {
+public class MedicationRequestDTO {
     private Long id;
     private String name;
     private List<Long> ingredientIds;

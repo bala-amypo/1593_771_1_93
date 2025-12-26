@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class InteractionCheckResultDto {
+public class InteractionCheckResultDTO {
     private Long resultId;
     private String medicationNames;
     private List<InteractionDto> matchedInteractions;
