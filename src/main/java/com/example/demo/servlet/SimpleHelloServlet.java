@@ -18,9 +18,3 @@ public class SimpleHelloServlet extends HttpServlet {
 }
 
 
-// <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-// <dependency>
-//     <groupId>org.projectlombok</groupId>
-//     <artifactId>lombok</artifactId>
-//     <version>1.18.42</version>
-// </dependency>
