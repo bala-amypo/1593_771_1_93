@@ -51,27 +51,33 @@ package com.example.demo.controller;
 
 import com.example.demo.model.InteractionCheckResult;
 import com.example.demo.service.InteractionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/interact")
 public class InteractionController {
 
-    private final InteractionService service;
+    private final InteractionService interactionService;
 
-    public InteractionController(InteractionService service) {
-        this.service = service;
+    public InteractionController(InteractionService interactionService) {
+        this.interactionService = interactionService;
     }
 
     @PostMapping("/check")
-    public InteractionCheckResult check(@RequestBody List<Long> medicationIds) {
-        return service.checkInteractions(medicationIds);
+    public ResponseEntity<InteractionCheckResult> checkInteractions(@RequestBody Map<String, List<Long>> request) {
+        List<Long> medicationIds = request.get("medicationIds");
+        if (medicationIds == null || medicationIds.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(interactionService.checkInteractions(medicationIds));
     }
 
     @GetMapping("/result/{id}")
-    public InteractionCheckResult getResult(@PathVariable Long id) {
-        return service.getResult(id);
+    public ResponseEntity<InteractionCheckResult> getResult(@PathVariable Long id) {
+        return ResponseEntity.ok(interactionService.getResult(id));
     }
 }

@@ -43,6 +43,7 @@ package com.example.demo.controller;
 import com.example.demo.model.ActiveIngredient;
 import com.example.demo.model.Medication;
 import com.example.demo.service.CatalogService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,24 +52,24 @@ import java.util.List;
 @RequestMapping("/catalog")
 public class CatalogController {
 
-    private final CatalogService service;
+    private final CatalogService catalogService;
 
-    public CatalogController(CatalogService service) {
-        this.service = service;
+    public CatalogController(CatalogService catalogService) {
+        this.catalogService = catalogService;
     }
 
     @PostMapping("/ingredient")
-    public ActiveIngredient addIngredient(@RequestBody ActiveIngredient ingredient) {
-        return service.addIngredient(ingredient);
+    public ResponseEntity<ActiveIngredient> addIngredient(@RequestBody ActiveIngredient ingredient) {
+        return ResponseEntity.status(201).body(catalogService.addIngredient(ingredient));
     }
 
     @PostMapping("/medication")
-    public Medication addMedication(@RequestBody Medication medication) {
-        return service.addMedication(medication);
+    public ResponseEntity<Medication> addMedication(@RequestBody Medication medication) {
+        return ResponseEntity.status(201).body(catalogService.addMedication(medication));
     }
 
     @GetMapping("/medications")
-    public List<Medication> getAllMedications() {
-        return service.getAllMedications();
+    public ResponseEntity<List<Medication>> getAllMedications() {
+        return ResponseEntity.ok(catalogService.getAllMedications());
     }
 }
