@@ -68,68 +68,68 @@
 
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.InteractionService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class InteractionServiceImpl implements InteractionService {
+    private final MedicationRepository medicationRepository;
+    private final InteractionRuleRepository ruleRepository;
+    private final InteractionCheckResultRepository resultRepository;
+    private final ObjectMapper objectMapper;
 
-    private final MedicationRepository medicationRepo;
-    private final InteractionRuleRepository ruleRepo;
-    private final InteractionCheckResultRepository resultRepo;
-
-    public InteractionServiceImpl(MedicationRepository medicationRepo,
-                                  InteractionRuleRepository ruleRepo,
-                                  InteractionCheckResultRepository resultRepo) {
-        this.medicationRepo = medicationRepo;
-        this.ruleRepo = ruleRepo;
-        this.resultRepo = resultRepo;
+    public InteractionServiceImpl(MedicationRepository medicationRepo, 
+                                  InteractionRuleRepository ruleRepo, 
+                                  InteractionCheckResultRepository resultRepo, 
+                                  ObjectMapper objectMapper) {
+        this.medicationRepository = medicationRepo;
+        this.ruleRepository = ruleRepo;
+        this.resultRepository = resultRepo;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public InteractionCheckResult checkInteractions(List<Long> medicationIds) {
+        List<Medication> medications = medicationRepository.findAllById(medicationIds);
+        String medNames = medications.stream().map(Medication::getName).collect(Collectors.joining(", "));
+        
+        Set<ActiveIngredient> allIngredients = medications.stream()
+                .flatMap(m -> m.getIngredients().stream())
+                .collect(Collectors.toSet());
 
-        List<Medication> meds = medicationRepo.findAllById(medicationIds);
-        if (meds.isEmpty()) {
-            throw new IllegalArgumentException("No medications found");
-        }
+        List<ActiveIngredient> ingredientList = new ArrayList<>(allIngredients);
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        ArrayNode interactionsArray = rootNode.putArray("interactions");
 
-        Set<ActiveIngredient> ingredients = new HashSet<>();
-        meds.forEach(m -> ingredients.addAll(m.getIngredients()));
-
-        List<String> interactions = new ArrayList<>();
-        List<ActiveIngredient> list = new ArrayList<>(ingredients);
-
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
-                ruleRepo.findRuleBetweenIngredients(
-                        list.get(i).getId(),
-                        list.get(j).getId()
-                ).ifPresent(rule ->
-                        interactions.add(rule.getDescription()));
+        for (int i = 0; i < ingredientList.size(); i++) {
+            for (int j = i + 1; j < ingredientList.size(); j++) {
+                Optional<InteractionRule> rule = ruleRepository.findRuleBetweenIngredients(
+                        ingredientList.get(i).getId(), ingredientList.get(j).getId());
+                
+                if (rule.isPresent()) {
+                    ObjectNode ruleNode = interactionsArray.addObject();
+                    ruleNode.put("ingredientA", rule.get().getIngredientA().getName());
+                    ruleNode.put("ingredientB", rule.get().getIngredientB().getName());
+                    ruleNode.put("severity", rule.get().getSeverity());
+                    ruleNode.put("description", rule.get().getDescription());
+                }
             }
         }
 
-        String medNames = meds.stream()
-                .map(Medication::getName)
-                .reduce((a, b) -> a + "," + b)
-                .orElse("");
-
-        InteractionCheckResult result =
-                new InteractionCheckResult(medNames, interactions.toString());
-
-        return resultRepo.save(result);
+        InteractionCheckResult result = new InteractionCheckResult(medNames, rootNode.toString());
+        return resultRepository.save(result);
     }
 
     @Override
     public InteractionCheckResult getResult(Long id) {
-        return resultRepo.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Result not found"));
+        return resultRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Result not found"));
     }
 }

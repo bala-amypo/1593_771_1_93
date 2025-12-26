@@ -62,38 +62,31 @@ import com.example.demo.model.InteractionRule;
 import com.example.demo.repository.InteractionRuleRepository;
 import com.example.demo.service.RuleService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class RuleServiceImpl implements RuleService {
+    private final InteractionRuleRepository ruleRepository;
 
-    private final InteractionRuleRepository ruleRepo;
-
-    public RuleServiceImpl(InteractionRuleRepository ruleRepo) {
-        this.ruleRepo = ruleRepo;
+    public RuleServiceImpl(InteractionRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
     public InteractionRule addRule(InteractionRule rule) {
-
-        ruleRepo.findRuleBetweenIngredients(
-                rule.getIngredientA().getId(),
+        // Enforce uniqueness of the ingredient pair
+        var existing = ruleRepository.findRuleBetweenIngredients(
+                rule.getIngredientA().getId(), 
                 rule.getIngredientB().getId()
-        ).ifPresent(r -> {
-            throw new IllegalArgumentException("Rule already exists");
-        });
-
-        if (!List.of("MINOR", "MODERATE", "MAJOR")
-                .contains(rule.getSeverity())) {
-            throw new IllegalArgumentException("Invalid severity");
+        );
+        if (existing.isPresent()) {
+            throw new RuntimeException("Rule already exists for this ingredient pair");
         }
-
-        return ruleRepo.save(rule);
+        return ruleRepository.save(rule);
     }
 
     @Override
     public List<InteractionRule> getAllRules() {
-        return ruleRepo.findAll();
+        return ruleRepository.findAll();
     }
 }
