@@ -73,39 +73,36 @@ import com.example.demo.repository.ActiveIngredientRepository;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.service.CatalogService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class CatalogServiceImpl implements CatalogService {
+    private final ActiveIngredientRepository ingredientRepository;
+    private final MedicationRepository medicationRepository;
 
-    private final ActiveIngredientRepository ingredientRepo;
-    private final MedicationRepository medicationRepo;
-
-    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepo,
-                              MedicationRepository medicationRepo) {
-        this.ingredientRepo = ingredientRepo;
-        this.medicationRepo = medicationRepo;
+    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepo, MedicationRepository medicationRepo) {
+        this.ingredientRepository = ingredientRepo;
+        this.medicationRepository = medicationRepo;
     }
 
     @Override
     public ActiveIngredient addIngredient(ActiveIngredient ingredient) {
-        if (ingredientRepo.existsByName(ingredient.getName())) {
-            throw new IllegalArgumentException("Ingredient already exists");
+        if (ingredientRepository.existsByName(ingredient.getName())) {
+            throw new RuntimeException("Ingredient already exists");
         }
-        return ingredientRepo.save(ingredient);
+        return ingredientRepository.save(ingredient);
     }
 
     @Override
     public Medication addMedication(Medication medication) {
-        if (medication.getIngredients().isEmpty()) {
-            throw new IllegalArgumentException("Medication must have ingredients");
+        if (medication.getIngredients() == null || medication.getIngredients().isEmpty()) {
+            throw new RuntimeException("Medication must have at least one ingredient");
         }
-        return medicationRepo.save(medication);
+        return medicationRepository.save(medication);
     }
 
     @Override
     public List<Medication> getAllMedications() {
-        return medicationRepo.findAll();
+        return medicationRepository.findAll();
     }
 }
