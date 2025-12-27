@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "medications")
@@ -12,6 +11,7 @@ public class Medication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @ManyToMany
@@ -20,33 +20,23 @@ public class Medication {
         joinColumns = @JoinColumn(name = "medication_id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private Set<ActiveIngredient> ingredients = new HashSet<>();
+    private List<ActiveIngredient> activeIngredients;
 
-    public Medication() {
-        this.ingredients = new HashSet<>();
-    }
+    public Medication() {}
 
-    public Medication(String name) {
+    public Medication(String name, List<ActiveIngredient> activeIngredients) {
         this.name = name;
-        this.ingredients = new HashSet<>();
-    }
-
-    public void addIngredient(ActiveIngredient ingredient) {
-        this.ingredients.add(ingredient);
-    }
-
-    public void removeIngredient(ActiveIngredient ingredient) {
-        this.ingredients.remove(ingredient);
+        this.activeIngredients = activeIngredients;
     }
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public List<ActiveIngredient> getActiveIngredients() {
+        return activeIngredients;
+    }
 
-    public Set<ActiveIngredient> getIngredients() { return ingredients; }
-    public void setIngredients(Set<ActiveIngredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setName(String name) { this.name = name; }
+    public void setActiveIngredients(List<ActiveIngredient> activeIngredients) {
+        this.activeIngredients = activeIngredients;
     }
 }
