@@ -11,7 +11,6 @@ public class Medication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
     @ManyToMany
@@ -22,20 +21,34 @@ public class Medication {
     )
     private List<ActiveIngredient> activeIngredients;
 
-    public Medication() {}
-
-    public Medication(String name, List<ActiveIngredient> activeIngredients) {
-        this.name = name;
-        this.activeIngredients = activeIngredients;
+    public Medication() {
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
+    public Medication(String name) {
+        this.name = name;
+    }
+
+    // Getters & Setters
+    public Long getId() {
+        return id;
+    }
+ 
+    public void setId(Long id) {
+        this.id = id;
+    }
+ 
+    public String getName() {
+        return name;
+    }
+ 
+    public void setName(String name) {
+        this.name = name;
+    }
+ 
     public List<ActiveIngredient> getActiveIngredients() {
         return activeIngredients;
     }
-
-    public void setName(String name) { this.name = name; }
+ 
     public void setActiveIngredients(List<ActiveIngredient> activeIngredients) {
         this.activeIngredients = activeIngredients;
     }
