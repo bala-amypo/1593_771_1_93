@@ -27,6 +27,8 @@
 
 // //         filterChain.doFilter(request, response);
 // //     }
+
+
 // }
 
 
@@ -50,7 +52,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // TEMP: just continue the chain
         filterChain.doFilter(request, response);
     }
 }
