@@ -17,25 +17,50 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http,
+    //                                                JwtAuthenticationFilter jwtFilter)
+    //         throws Exception {
+
+    //     http
+    //         .csrf(csrf -> csrf.disable())
+    //         .sessionManagement(sm ->
+    //             sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    //         .authorizeHttpRequests(auth -> auth
+    //             .requestMatchers(
+    //                     "/auth/register",
+    //                     "/auth/login",
+    //                     "/swagger-ui/**",
+    //                     "/v3/api-docs/**"
+    //             ).permitAll()
+    //             .anyRequest().authenticated()
+    //         );
+
+    //     return http.build();
+    // }
+
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   JwtAuthenticationFilter jwtFilter)
-            throws Exception {
+public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                               JwtAuthenticationFilter jwtFilter)
+        throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm ->
+    http
+        .csrf(csrf -> csrf.disable())
+        .sessionManagement(sm ->
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/auth/register",
-                        "/auth/login",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**"
-                ).permitAll()
+        .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**")
+                .permitAll()
                 .anyRequest().authenticated()
-            );
+        )
+        .addFilterBefore(jwtFilter,
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    return http.build();
 }
+
+}
+
+
+
