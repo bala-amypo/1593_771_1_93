@@ -79,22 +79,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String role;   // ✅ STRING ROLE
 
-    // ✅ Required by JPA
     public User() {}
 
-    // ✅ Used in register
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = Role.USER;
+        this.role = "USER";
     }
 
-    // getters & setters
     public Long getId() { return id; }
 
     public String getName() { return name; }
@@ -106,6 +102,6 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }
