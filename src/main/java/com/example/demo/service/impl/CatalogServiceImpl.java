@@ -17,7 +17,6 @@ public class CatalogServiceImpl implements CatalogService {
     @Autowired(required = false)
     private MedicationRepository medicationRepository;
 
-    // REQUIRED: No-args constructor
     public CatalogServiceImpl() {}
 
     @Override

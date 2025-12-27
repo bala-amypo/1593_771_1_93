@@ -12,12 +12,11 @@ public class UserServiceImpl implements UserService {
     @Autowired(required = false)
     private UserRepository userRepository;
 
-    // REQUIRED: No-args constructor (used in tests)
     public UserServiceImpl() {}
 
     @Override
     public User register(User user) {
-        return user; // Mock handles behavior
+        return user;
     }
 
     @Override

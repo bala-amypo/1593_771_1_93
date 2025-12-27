@@ -16,12 +16,10 @@ public class SimpleHelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Set status and content type
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
-        // Write response body
         try (PrintWriter out = response.getWriter()) {
             out.print("Hello from Simple Hello Servlet");
         }

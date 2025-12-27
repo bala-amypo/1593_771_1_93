@@ -12,7 +12,6 @@ public class RuleServiceImpl implements RuleService {
     @Autowired(required = false)
     private InteractionRuleRepository ruleRepository;
 
-    // REQUIRED: No-args constructor
     public RuleServiceImpl() {}
 
     @Override

@@ -14,7 +14,6 @@ public class InteractionServiceImpl implements InteractionService {
     @Autowired(required = false)
     private InteractionCheckResultRepository resultRepository;
 
-    // REQUIRED: No-args constructor
     public InteractionServiceImpl() {}
 
     @Override
