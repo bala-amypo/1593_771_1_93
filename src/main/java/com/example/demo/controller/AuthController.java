@@ -101,8 +101,7 @@ public class AuthController {
         User user = new User(
                 request.getName(),
                 request.getEmail(),
-                request.getPassword(),
-                request.getRole()
+                request.getPassword()
         );
 
         return ResponseEntity.ok(userService.register(user));

@@ -65,7 +65,7 @@ import jakarta.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ AUTO ID
     private Long id;
 
     @Column(nullable = false)
@@ -80,23 +80,13 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    // JPA constructor
     public User() {}
 
-    // 3-arg constructor (role defaults to USER)
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = "USER";
-    }
-
-    // ✅ 4-arg constructor (FIX)
-    public User(String name, String email, String password, String role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = (role == null || role.isBlank()) ? "USER" : role;
     }
 
     public Long getId() { return id; }
@@ -105,5 +95,7 @@ public class User {
     public String getPassword() { return password; }
     public String getRole() { return role; }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
