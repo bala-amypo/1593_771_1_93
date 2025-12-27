@@ -17,7 +17,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Required only to satisfy Spring context (tests never call this)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtFilter)

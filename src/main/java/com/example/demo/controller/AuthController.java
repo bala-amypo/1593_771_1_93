@@ -20,7 +20,6 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    // Constructor injection (required)
     public AuthController(UserService userService,
                           PasswordEncoder passwordEncoder,
                           JwtUtil jwtUtil) {
