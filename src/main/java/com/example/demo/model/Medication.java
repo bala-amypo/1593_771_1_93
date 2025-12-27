@@ -1,10 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "medications")
+@Table(name = "medication")
 public class Medication {
 
     @Id
@@ -19,37 +19,19 @@ public class Medication {
         joinColumns = @JoinColumn(name = "medication_id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private List<ActiveIngredient> activeIngredients;
+    private Set<ActiveIngredient> ingredients;
 
-    public Medication() {
-    }
+    public Medication() {}
 
-    public Medication(String name) {
-        this.name = name;
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // Getters & Setters
-    public Long getId() {
-        return id;
-    }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
- 
-    public String getName() {
-        return name;
-    }
- 
-    public void setName(String name) {
-        this.name = name;
-    }
- 
-    public List<ActiveIngredient> getActiveIngredients() {
-        return activeIngredients;
-    }
- 
-    public void setActiveIngredients(List<ActiveIngredient> activeIngredients) {
-        this.activeIngredients = activeIngredients;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public Set<ActiveIngredient> getIngredients() { return ingredients; }
+    public void setIngredients(Set<ActiveIngredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
