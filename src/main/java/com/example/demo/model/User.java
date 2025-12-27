@@ -19,12 +19,10 @@ public class User {
 
     private String role = "USER";
 
-    // ✅ No-arg constructor (REQUIRED)
     public User() {
         this.role = "USER";
     }
 
-    // ✅ 3-arg constructor (REQUIRED by tests)
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
@@ -32,7 +30,6 @@ public class User {
         this.role = "USER";
     }
 
-    // ✅ 4-arg constructor (spec)
     public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
@@ -40,7 +37,6 @@ public class User {
         this.role = (role == null ? "USER" : role);
     }
 
-    // ===== Getters & Setters =====
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

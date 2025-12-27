@@ -13,15 +13,12 @@ public class ActiveIngredient {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // ✅ No-arg constructor
     public ActiveIngredient() {}
 
-    // ✅ Required by tests
     public ActiveIngredient(String name) {
         this.name = name;
     }
 
-    // ===== Getters & Setters =====
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

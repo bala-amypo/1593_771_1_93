@@ -5,13 +5,11 @@ public class RegisterRequest {
     private String name;
     private String email;
     private String password;
-    private String role; // optional
+    private String role; 
 
-    // No-arg constructor
     public RegisterRequest() {
     }
 
-    // Getters & Setters
     public String getName() {
         return name;
     }

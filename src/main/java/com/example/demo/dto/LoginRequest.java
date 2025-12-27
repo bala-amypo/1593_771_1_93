@@ -5,11 +5,9 @@ public class LoginRequest {
     private String email;
     private String password;
 
-    // No-arg constructor
     public LoginRequest() {
     }
 
-    // Getters & Setters
     public String getEmail() {
         return email;
     }

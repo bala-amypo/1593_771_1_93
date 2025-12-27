@@ -18,19 +18,16 @@ public class InteractionCheckResult {
 
     private LocalDateTime checkedAt;
 
-    // ✅ No-arg constructor (AUTO timestamp)
     public InteractionCheckResult() {
         this.checkedAt = LocalDateTime.now();
     }
 
-    // ✅ Required by tests
     public InteractionCheckResult(String medications, String interactions) {
         this.medications = medications;
         this.interactions = interactions;
         this.checkedAt = LocalDateTime.now();
     }
 
-    // ===== Getters & Setters =====
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

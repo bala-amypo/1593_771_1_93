@@ -22,18 +22,15 @@ public class Medication {
     )
     private Set<ActiveIngredient> ingredients = new HashSet<>();
 
-    // ✅ No-arg constructor
     public Medication() {
         this.ingredients = new HashSet<>();
     }
 
-    // ✅ Required by tests
     public Medication(String name) {
         this.name = name;
         this.ingredients = new HashSet<>();
     }
 
-    // ===== Helper methods (TESTS DEPEND ON THESE) =====
     public void addIngredient(ActiveIngredient ingredient) {
         this.ingredients.add(ingredient);
     }
@@ -42,7 +39,6 @@ public class Medication {
         this.ingredients.remove(ingredient);
     }
 
-    // ===== Getters & Setters =====
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

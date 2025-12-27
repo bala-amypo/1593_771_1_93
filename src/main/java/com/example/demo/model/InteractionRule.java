@@ -23,10 +23,8 @@ public class InteractionRule {
     @Column(length = 1000)
     private String description;
 
-    // ✅ No-arg constructor
     public InteractionRule() {}
 
-    // ✅ Required by tests
     public InteractionRule(
             ActiveIngredient ingredientA,
             ActiveIngredient ingredientB,
@@ -39,7 +37,6 @@ public class InteractionRule {
         this.description = description;
     }
 
-    // ===== Getters & Setters =====
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
