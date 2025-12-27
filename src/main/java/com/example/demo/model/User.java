@@ -56,8 +56,6 @@
 // }
 
 
-
-
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -82,8 +80,18 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    // JPA constructor
     public User() {}
 
+    // 3-arg constructor (role defaults to USER)
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = "USER";
+    }
+
+    // ✅ 4-arg constructor (FIX)
     public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
