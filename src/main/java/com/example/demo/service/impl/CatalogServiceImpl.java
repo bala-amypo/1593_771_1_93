@@ -5,27 +5,44 @@ import com.example.demo.model.Medication;
 import com.example.demo.repository.ActiveIngredientRepository;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.service.CatalogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CatalogServiceImpl implements CatalogService {
 
-    @Autowired(required = false)
-    private ActiveIngredientRepository ingredientRepository;
+    private final ActiveIngredientRepository ingredientRepository;
+    private final MedicationRepository medicationRepository;
 
-    @Autowired(required = false)
-    private MedicationRepository medicationRepository;
-
-    public CatalogServiceImpl() {}
+    public CatalogServiceImpl(ActiveIngredientRepository ingredientRepository,
+                              MedicationRepository medicationRepository) {
+        this.ingredientRepository = ingredientRepository;
+        this.medicationRepository = medicationRepository;
+    }
 
     @Override
     public ActiveIngredient addIngredient(ActiveIngredient ingredient) {
-        return ingredient;
+
+        if (ingredientRepository.existsByName(ingredient.getName())) {
+            throw new IllegalArgumentException("Ingredient already exists");
+        }
+        return ingredientRepository.save(ingredient);
     }
 
     @Override
     public Medication addMedication(Medication medication) {
-        return medication;
+
+        if (medication.getIngredients() == null ||
+            medication.getIngredients().size() < 1) {
+            throw new IllegalArgumentException(
+                    "Medication must contain at least one ingredient");
+        }
+        return medicationRepository.save(medication);
+    }
+
+    @Override
+    public List<Medication> getAllMedications() {
+        return medicationRepository.findAll();
     }
 }
