@@ -1,3 +1,4 @@
+
 package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
@@ -38,3 +39,5 @@ public class AuthController {
         return Map.of("token", token);
     }
 }
+
+

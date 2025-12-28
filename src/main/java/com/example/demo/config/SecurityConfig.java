@@ -1,37 +1,52 @@
+
 package com.example.demo.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SwaggerConfig {
+public class SecurityConfig {
 
     @Bean
-    public OpenAPI customOpenAPI() {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        SecurityScheme bearerAuth = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT");
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui.html"
+                ).permitAll()
+                .anyRequest().permitAll()
+            );
 
-        Server server = new Server()
-                .url("https://9128.32procr.amypo.ai")
-                .description("Production Server");
-
-        return new OpenAPI()
-                .addSecurityItem(
-                        new SecurityRequirement().addList("bearerAuth")
-                )
-                .components(
-                        new Components().addSecuritySchemes("bearerAuth", bearerAuth)
-                )
-                .servers(List.of(server));
+        return http.build();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
