@@ -1,3 +1,6 @@
+
+
+
 package com.example.demo.repository;
 
 import com.example.demo.model.InteractionRule;
@@ -30,3 +33,9 @@ public interface InteractionRuleRepository extends JpaRepository<InteractionRule
             @Param("id2") Long ingredientId2
     );
 }
+
+
+
+
+
+
