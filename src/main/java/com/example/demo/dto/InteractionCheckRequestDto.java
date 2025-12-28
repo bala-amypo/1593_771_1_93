@@ -1,23 +1,23 @@
-package com.example.demo.dto;
+// package com.example.demo.dto;
 
-import java.util.List;
+// import java.util.List;
 
-public class InteractionCheckRequestDto {
+// public class InteractionCheckRequestDto {
 
-    private List<Long> medicationIds;
+//     private List<Long> medicationIds;
 
-    public InteractionCheckRequestDto() {
-    }
+//     public InteractionCheckRequestDto() {
+//     }
 
-    public InteractionCheckRequestDto(List<Long> medicationIds) {
-        this.medicationIds = medicationIds;
-    }
+//     public InteractionCheckRequestDto(List<Long> medicationIds) {
+//         this.medicationIds = medicationIds;
+//     }
 
-    public List<Long> getMedicationIds() {
-        return medicationIds;
-    }
+//     public List<Long> getMedicationIds() {
+//         return medicationIds;
+//     }
 
-    public void setMedicationIds(List<Long> medicationIds) {
-        this.medicationIds = medicationIds;
-    }
-}
+//     public void setMedicationIds(List<Long> medicationIds) {
+//         this.medicationIds = medicationIds;
+//     }
+// }
