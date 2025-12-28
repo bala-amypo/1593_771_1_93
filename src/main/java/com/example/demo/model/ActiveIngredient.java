@@ -3,21 +3,20 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "active_ingredient", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "name")
-})
 public class ActiveIngredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
     public ActiveIngredient() {}
 
-    // Getters and Setters
+    public ActiveIngredient(String name) {
+        this.name = name;
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

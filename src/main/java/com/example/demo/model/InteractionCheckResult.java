@@ -2,45 +2,59 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "interaction_check_result")
 public class InteractionCheckResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 1000)
-    private String medications; // comma-separated medication names
+    @ElementCollection
+    private List<Long> medicationIds;
 
-    @Column(columnDefinition = "TEXT")
-    private String interactions; // JSON summary
+    private String interactions;
 
     private LocalDateTime checkedAt;
 
-    @PrePersist
-    public void onCreate() {
+    public InteractionCheckResult() {
         this.checkedAt = LocalDateTime.now();
     }
 
-    public InteractionCheckResult() {}
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getMedications() { return medications; }
-    public void setMedications(String medications) {
-        this.medications = medications;
+    public InteractionCheckResult(String interactions, String status) {
+        this.interactions = interactions;
+        this.checkedAt = LocalDateTime.now();
     }
 
-    public String getInteractions() { return interactions; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Long> getMedicationIds() {
+        return medicationIds;
+    }
+
+    public void setMedicationIds(List<Long> medicationIds) {
+        this.medicationIds = medicationIds;
+    }
+
+    public String getInteractions() {
+        return interactions;
+    }
+
     public void setInteractions(String interactions) {
         this.interactions = interactions;
     }
 
-    public LocalDateTime getCheckedAt() { return checkedAt; }
+    public LocalDateTime getCheckedAt() {
+        return checkedAt;
+    }
+
     public void setCheckedAt(LocalDateTime checkedAt) {
         this.checkedAt = checkedAt;
     }

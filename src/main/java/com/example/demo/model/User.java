@@ -12,7 +12,7 @@ public class User {
 
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
     private String password;
@@ -21,7 +21,12 @@ public class User {
 
     public User() {}
 
-    // Getters and Setters
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = "USER";
+    }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -1,10 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "medication")
 public class Medication {
 
     @Id
@@ -13,17 +13,22 @@ public class Medication {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-        name = "medication_ingredients",
-        joinColumns = @JoinColumn(name = "medication_id"),
-        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private Set<ActiveIngredient> ingredients;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<ActiveIngredient> ingredients = new HashSet<>();
 
     public Medication() {}
 
-    // Getters and Setters
+    public Medication(String name) {
+        this.name = name;
+    }
+
+    public void addIngredient(ActiveIngredient ingredient) {
+        ingredients.add(ingredient);
+    }
+
+    public void removeIngredient(ActiveIngredient ingredient) {
+        ingredients.remove(ingredient);
+    }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
