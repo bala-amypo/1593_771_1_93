@@ -1,21 +1,21 @@
-// package com.example.demo.dto;
+package com.example.demo.dto;
 
-// public class IngredientDto {
+public class IngredientDto {
 
-//     private String name;
+    private String name;
 
-//     public IngredientDto() {
-//     }
+    public IngredientDto() {
+    }
 
-//     public IngredientDto(String name) {
-//         this.name = name;
-//     }
+    public IngredientDto(String name) {
+        this.name = name;
+    }
 
-//     public String getName() {
-//         return name;
-//     }
+    public String getName() {
+        return name;
+    }
 
-//     public void setName(String name) {
-//         this.name = name;
-//     }
-// }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
