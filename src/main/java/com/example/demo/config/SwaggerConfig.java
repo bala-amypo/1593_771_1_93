@@ -1,45 +1,40 @@
 package com.example.demo.config;
 
-import io.swagger.v3.oas.models.*;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.*;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI() {
-
-        SecurityScheme jwtScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT")
-                .in(SecurityScheme.In.HEADER)
-                .name("Authorization");
-
-        SecurityRequirement securityRequirement =
-                new SecurityRequirement().addList("bearerAuth");
-
-        Server customServer = new Server()
-                .url("https://9117.pro604cr.amypo.ai/")
-                .description("Custom deployment server");
-
+    public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+        
         return new OpenAPI()
                 .info(new Info()
-                        .title("Drug Interaction Checker API")
-                        .description("API for checking drug interactions using active ingredients")
-                        .version("1.0.0")
-                )
-                .servers(List.of(customServer))
+                        .title("Drug Interaction API")
+                        .version("1.0")
+                        .description("API for managing medications and checking interactions."))
+                // 1. Keep your custom server URL
+                .servers(List.of(
+                        new Server().url("https://9004.pro604cr.amypo.ai/")
+                ))
+                // 2. This adds the Lock Icon / Authorize button to Swagger
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                // 3. This tells Swagger that we use JWT Bearer Tokens
                 .components(new Components()
-                        .addSecuritySchemes("bearerAuth", jwtScheme)
-                )
-                .addSecurityItem(securityRequirement);
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 }
-
