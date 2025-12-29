@@ -1,9 +1,12 @@
 
+
 package com.example.demo.repository;
 
 import com.example.demo.model.Medication;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MedicationRepository
-        extends JpaRepository<Medication, Long> {
+@Repository
+public interface MedicationRepository extends JpaRepository<Medication, Long> {
+    // Standard JpaRepository provides save, findById, and findAll (used in Test 38)
 }

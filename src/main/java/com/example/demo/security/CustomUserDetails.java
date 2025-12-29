@@ -1,3 +1,5 @@
+
+
 package com.example.demo.security;
 
 import com.example.demo.model.User;
@@ -16,19 +18,10 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
-    public Long getUserId() {
-        return user.getId();
-    }
-
-    public String getRole() {
-        return user.getRole();
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole())
-        );
+        // Derives authorities from role, e.g., ROLE_USER or ROLE_ADMIN (Rule 8.3)
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
     @Override
@@ -42,22 +35,18 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean isEnabled() { return true; }
+
+    public Long getUserId() {
+        return user.getId();
     }
 }
