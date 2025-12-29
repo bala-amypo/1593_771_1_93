@@ -1,34 +1,39 @@
-
 package com.example.demo.model;
 
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "interaction_rules")
 public class InteractionRule {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // REMOVED THE UNDERSCORE TO MATCH THE DATABASE ERROR
     @ManyToOne
+    @JoinColumn(name = "ingredienta_id")
     private ActiveIngredient ingredientA;
 
+    // REMOVED THE UNDERSCORE TO MATCH THE DATABASE ERROR
     @ManyToOne
+    @JoinColumn(name = "ingredientb_id")
     private ActiveIngredient ingredientB;
 
-    private String severity;
-
+    private String severity; // MINOR, MODERATE, MAJOR
     private String description;
 
+    // No-arg constructor (Rule 2.4)
     public InteractionRule() {}
 
-    public InteractionRule(ActiveIngredient a, ActiveIngredient b,
-                           String severity, String description) {
-        this.ingredientA = a;
-        this.ingredientB = b;
+    // Field constructor (Rule 2.4)
+    public InteractionRule(ActiveIngredient ingredientA, ActiveIngredient ingredientB, String severity, String description) {
+        this.ingredientA = ingredientA;
+        this.ingredientB = ingredientB;
         this.severity = severity;
         this.description = description;
     }
+
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

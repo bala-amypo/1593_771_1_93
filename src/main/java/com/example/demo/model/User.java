@@ -1,4 +1,5 @@
 
+
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -6,28 +7,31 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     private String name;
-
+    
     @Column(unique = true)
     private String email;
-
+    
     private String password;
+    
+    private String role = "USER"; // Default value (Rule 2.1)
 
-    private String role = "USER";
-
+    // No-arg constructor (Rule 2.1)
     public User() {}
 
+    // Field constructor (Rule 2.1)
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = "USER";
     }
+
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

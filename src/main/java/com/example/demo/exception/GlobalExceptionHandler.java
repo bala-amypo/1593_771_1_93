@@ -1,25 +1,35 @@
 package com.example.demo.exception;
 
+import com.example.demo.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex, WebRequest request) {
+        ErrorResponse err = new ErrorResponse(
+                LocalDateTime.now(), 
+                HttpStatus.NOT_FOUND.value(), 
+                "Not Found", 
+                ex.getMessage(), 
+                request.getDescription(false));
+        return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleBadRequest(IllegalArgumentException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntime(RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGlobal(Exception ex, WebRequest request) {
+        ErrorResponse err = new ErrorResponse(
+                LocalDateTime.now(), 
+                HttpStatus.INTERNAL_SERVER_ERROR.value(), 
+                "Internal Error", 
+                ex.getMessage(), 
+                request.getDescription(false));
+        return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
