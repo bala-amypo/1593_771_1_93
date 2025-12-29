@@ -1,167 +1,103 @@
-// package com.example.demo.util;
-
-// import io.jsonwebtoken.Jwts;
-// import io.jsonwebtoken.SignatureAlgorithm;
-// import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.stereotype.Component;
-
-// import java.util.Date;
-// import java.util.HashMap;
-// import java.util.Map;
-
-// @Component
-// public class JwtUtil {
-
-//     private static final String SECRET_KEY = "mySecretKey123456";
-//     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
-
-//     // Used by AuthController
-//     public String generateToken(String email) {
-//         return Jwts.builder()
-//                 .setSubject(email)
-//                 .setIssuedAt(new Date())
-//                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-//                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-//                 .compact();
-//     }
-
-//     // Used by tests (keep this)
-//     public String generateToken(String email, Long userId, String role) {
-//         Map<String, Object> claims = new HashMap<>();
-//         claims.put("userId", userId);
-//         claims.put("role", role);
-
-//         return Jwts.builder()
-//                 .setClaims(claims)
-//                 .setSubject(email)
-//                 .setIssuedAt(new Date())
-//                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-//                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-//                 .compact();
-//     }
-
-//     public boolean validateToken(String token, UserDetails userDetails) {
-//         return true; // keep simple (tests expect this)
-//     }
-
-//     public String extractUsername(String token) {
-//         return Jwts.parser()
-//                 .setSigningKey(SECRET_KEY)
-//                 .parseClaimsJws(token)
-//                 .getBody()
-//                 .getSubject();
-//     }
-
-//     public Long extractUserId(String token) {
-//         Object value = Jwts.parser()
-//                 .setSigningKey(SECRET_KEY)
-//                 .parseClaimsJws(token)
-//                 .getBody()
-//                 .get("userId");
-
-//         return value == null ? null : Long.parseLong(value.toString());
-//     }
-
-//     public String extractRole(String token) {
-//         Object value = Jwts.parser()
-//                 .setSigningKey(SECRET_KEY)
-//                 .parseClaimsJws(token)
-//                 .getBody()
-//                 .get("role");
-
-//         return value == null ? null : value.toString();
-//     }
-// }
-
-
-
-
 
 package com.example.demo.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    // 256-bit Base64 key (SAFE for HS256)
-    private static final String SECRET_KEY =
-            "u6fZ8z8Y5xvQ2FJ9pKcL4V1H2ZrM9aN8eT0WbYxC3qA=";
+    // A secure secret key (at least 256 bits for HS256)
+    private final String SECRET_KEY_STR = "your-very-secure-and-long-secret-key-for-drug-interaction-checker";
+    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STR.getBytes(StandardCharsets.UTF_8));
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
+    // Token expiration time (e.g., 10 hours)
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
-    }
-
-    // Used by AuthController
-    public String generateToken(String email) {
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    // Used by tests (KEEP)
+    /**
+     * Creates a JWT with user ID, email, role, issued-at, and expiration.
+     * Required by Rule 8.1 and Test 32.
+     */
     public String generateToken(String email, Long userId, String role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("role", role);
-
+        
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
-                .setIssuedAt(new Date())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Tests expect simple validation
+    /**
+     * Validates token signature, expiration, and subject.
+     * Required by Rule 8.1 and Test 33.
+     */
     public boolean validateToken(String token, UserDetails userDetails) {
-        return true;
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    /**
+     * Returns the email (Subject).
+     * Required by Rule 8.1 and Test 34.
+     */
     public String extractUsername(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
 
+    /**
+     * Returns user ID claim.
+     * Required by Rule 8.1 and Test 34.
+     */
     public Long extractUserId(String token) {
-        Object value = Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("userId");
-
-        return value == null ? null : Long.parseLong(value.toString());
+        final Claims claims = extractAllClaims(token);
+        Object userId = claims.get("userId");
+        if (userId instanceof Integer) {
+            return ((Integer) userId).longValue();
+        }
+        return (Long) userId;
     }
 
+    /**
+     * Returns role claim.
+     * Required by Rule 8.1 and Test 34.
+     */
     public String extractRole(String token) {
-        Object value = Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+        final Claims claims = extractAllClaims(token);
+        return (String) claims.get("role");
+    }
+
+    // --- Helper Methods ---
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .get("role");
+                .getBody();
+    }
 
-        return value == null ? null : value.toString();
+    private boolean isTokenExpired(String token) {
+        return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 }

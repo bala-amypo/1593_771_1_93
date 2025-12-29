@@ -24,7 +24,7 @@ public class SwaggerConfig {
                         .description("API for managing medications and checking interactions."))
                 // 1. Keep your custom server URL
                 .servers(List.of(
-                        new Server().url("https://9004.pro604cr.amypo.ai/")
+                        new Server().url("https://9117.pro604cr.amypo.ai/")
                 ))
                 // 2. This adds the Lock Icon / Authorize button to Swagger
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
